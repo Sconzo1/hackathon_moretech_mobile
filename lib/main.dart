@@ -1,9 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:hackathon_moretech_mobile/app/flashcards/flashcards.dart';
+import 'package:hackathon_moretech_mobile/app/camp/camp_page.dart';
+import 'package:hackathon_moretech_mobile/app/inventory/inventory_page.dart';
+import 'package:hackathon_moretech_mobile/app/map/map_page.dart';
+import 'package:hackathon_moretech_mobile/app/profile/profile_page.dart';
+import 'package:hackathon_moretech_mobile/app/questionnaire/questionnaire_page.dart';
 import 'package:hackathon_moretech_mobile/app/top_level_providers.dart';
 import 'package:hackathon_moretech_mobile/constants/pages_ids.dart';
-import 'package:hackathon_moretech_mobile/widgets/bottom_navigation_bar.dart';
 import 'package:hackathon_moretech_mobile/widgets/floating_action_button.dart';
 
 void main() {
@@ -18,6 +21,9 @@ class MyApp extends StatelessWidget {
       debugShowCheckedModeBanner: false,
       theme: ThemeData(
         primarySwatch: Colors.blue,
+        outlinedButtonTheme: OutlinedButtonThemeData(
+          style: OutlinedButton.styleFrom(side: BorderSide(color: Color(0xff14315C))),
+        ),
       ),
       home: MyNavigation(),
     );
@@ -29,30 +35,29 @@ class MyNavigation extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, watch) {
-    final bottomNavIndex = watch(bottomNavIndexProvider);
+    final activePage = watch(activePageProvider);
 
     Widget? _getBody() {
-      switch (bottomNavIndex.state) {
-        case TESTS_PAGE:
+      switch (activePage.state) {
+        case INTRODUCTION_PAGE:
           {
-            //return TestsPage();
-            return Container();
+            return QuestionnairePage();
           }
-        case CHAT_PAGE:
+        case MAP_PAGE:
           {
-            return Container();
+            return MapPage();
           }
-        case GUIDES_PAGE:
+        case CAMP_PAGE:
           {
-            return Container();
+            return CampPage();
           }
         case PROFILE_PAGE:
           {
-            return Container();
+            return ProfilePage();
           }
-        case TODO_PAGE:
+        case INVENTORY_PAGE:
           {
-            return FlashCardsPage();
+            return InventoryPage();
           }
       }
     }
@@ -61,8 +66,8 @@ class MyNavigation extends ConsumerWidget {
     return Scaffold(
       body: _getBody(),
       floatingActionButton: MyFloatingActionButton(),
-      floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
-      bottomNavigationBar: MyNavigationBar(),
+      //floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
+      //bottomNavigationBar: MyNavigationBar(),
     );
 
   }
