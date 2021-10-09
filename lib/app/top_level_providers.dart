@@ -20,3 +20,9 @@ final activePageProvider = StateProvider<int>((ref) {
       ? MAP_PAGE
       : INTRODUCTION_PAGE;
 });
+
+final rememberedCardsProvider = StateProvider((ref) => 0);
+final notRememberedCardsProvider = StateProvider((ref) => 0);
+
+final isCardGameFinishedProvider = StateProvider((ref) => false);
+final isCardGameActiveProvider = StateProvider((ref) => true);

@@ -1,5 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:hackathon_moretech_mobile/app/flashcards/guidecards.dart';
+
+import '../top_level_providers.dart';
 
 class MapPage extends ConsumerWidget {
   const MapPage({
@@ -8,8 +11,11 @@ class MapPage extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, watch) {
+    final isCardGameActive = watch(isCardGameActiveProvider);
+
     return Container(
-      child: Center(child: Text('map')),
+      child:
+          isCardGameActive.state ? GuideCards() : Container(),
     );
   }
 }

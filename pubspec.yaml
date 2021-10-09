@@ -35,6 +35,7 @@ dependencies:
   flip_card:
   tcard:
   fab_circular_menu:
+  radar_chart:
 
   swipable_stack:
 
