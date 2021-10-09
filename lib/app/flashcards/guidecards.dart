@@ -211,6 +211,11 @@ class GuideCards extends ConsumerWidget {
                     style: TextStyle(fontSize: 18),
                   ),
                 ),
+                OutlinedButton(
+                    onPressed: () {
+                      Navigator.pop(context);
+                    },
+                    child: Text('Вернуться'))
               ],
             ),
           ),
@@ -223,29 +228,42 @@ class GuideCards extends ConsumerWidget {
     List<Widget> guideCards =
         List.generate(guides.length, (index) => _buildGuideCard(guides[index]));
 
-    return SafeArea(
-      child: Center(
-          child: !isCardGameFinished.state
-              ? TCard(
-                  size: Size(MediaQuery.of(context).size.width * 0.9,
-                      MediaQuery.of(context).size.height * 0.75),
-                  cards: guideCards,
-                  onForward: (index, info) {
-                    if (info.direction == SwipDirection.Left) {
-                      notRememberedCards.state++;
-                    } else {
-                      rememberedCards.state++;
-                    }
-                  },
-                  onEnd: () {
-                    print("OnEnd1");
-                    isCardGameFinished.state = true;
-                    // setState(() {
-                    //   isFinished = true;
-                    // });
-                  },
-                )
-              : _buildResultCard()),
+    return Scaffold(
+      body: Stack(
+        children: [
+          Container(
+            decoration: BoxDecoration(
+              image: DecorationImage(
+                image: AssetImage("assets/map.png"),
+                fit: BoxFit.fill,
+              ),
+            ),
+          ),
+          Center(
+            child: !isCardGameFinished.state
+                ? TCard(
+                    size: Size(MediaQuery.of(context).size.width * 0.9,
+                        MediaQuery.of(context).size.height * 0.75),
+                    cards: guideCards,
+                    onForward: (index, info) {
+                      if (info.direction == SwipDirection.Left) {
+                        notRememberedCards.state++;
+                      } else {
+                        rememberedCards.state++;
+                      }
+                    },
+                    onEnd: () {
+                      print("OnEnd1");
+                      isCardGameFinished.state = true;
+                      // setState(() {
+                      //   isFinished = true;
+                      // });
+                    },
+                  )
+                : _buildResultCard(),
+          ),
+        ],
+      ),
     );
   }
 }

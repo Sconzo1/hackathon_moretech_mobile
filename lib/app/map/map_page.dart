@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:hackathon_moretech_mobile/app/flashcards/guidecards.dart';
 import 'package:hackathon_moretech_mobile/app/map/map_providers.dart';
 import 'package:hackathon_moretech_mobile/app/minigames/chart_prediction/chart_game_page.dart';
 import 'package:transition/transition.dart';
@@ -64,7 +65,7 @@ class MapPage extends ConsumerWidget {
                       context,
                       Transition(
                           child: ChartMinigame(),
-                          transitionEffect: TransitionEffect.SCALE),
+                          transitionEffect: TransitionEffect.FADE),
                     );
                   },
                 );
@@ -82,8 +83,19 @@ class MapPage extends ConsumerWidget {
             bottom: 365,
             right: 140,
             child: InkWell(
-              onTap: () {
+              onTap: () async {
                 newPos.state = [365, 145];
+                final result = await Future.delayed(
+                  const Duration(milliseconds: 1500),
+                      () async {
+                    return await Navigator.push(
+                      context,
+                      Transition(
+                          child: GuideCards(),
+                          transitionEffect: TransitionEffect.FADE),
+                    );
+                  },
+                );
               },
               child: Container(
                 width: 80,
