@@ -16,7 +16,7 @@ class MyFloatingActionButton extends ConsumerWidget {
     return FabCircularMenu(
         key: fabKey,
         alignment: Alignment.bottomRight,
-        ringColor: Colors.blue.withAlpha(35),
+        ringColor: Colors.blue.withAlpha(65),
         ringDiameter: 350.0,
         ringWidth: 100.0,
         fabSize: 64.0,
