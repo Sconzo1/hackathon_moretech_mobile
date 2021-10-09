@@ -29,7 +29,7 @@ class MyNavigationBar extends ConsumerWidget {
     return AnimatedBottomNavigationBar.builder(
       itemCount: iconsList.length,
       tabBuilder: (index, isActive) {
-        final color = isActive ? Colors.blue : Colors.black;
+        final color = isActive ? Colors.white : Colors.white;
         return Column(
           mainAxisSize: MainAxisSize.min,
           mainAxisAlignment: MainAxisAlignment.center,
@@ -50,8 +50,9 @@ class MyNavigationBar extends ConsumerWidget {
           ],
         );
       },
-      leftCornerRadius: 10,
-      rightCornerRadius: 10,
+      leftCornerRadius: 0,
+      rightCornerRadius: 0,
+      backgroundColor: Color(0xff2653D3),
       splashColor: Colors.blue[50],
       splashRadius: 30,
       splashSpeedInMilliseconds: 250,

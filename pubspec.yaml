@@ -33,7 +33,7 @@ dependencies:
   introduction_screen:
   animated_bottom_navigation_bar:
   flip_card:
-  swipeable_card_stack:
+  tcard:
 
 
   # The following adds the Cupertino Icons font to your application.

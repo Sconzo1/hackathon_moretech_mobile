@@ -11,6 +11,7 @@ class MyFloatingActionButton extends ConsumerWidget {
     final bottomNavIndex = watch(bottomNavIndexProvider);
 
     return FloatingActionButton(
+      backgroundColor: Color(0xff2653D3),
       child: Text(
         'VТБ',
         style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold),

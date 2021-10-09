@@ -1,6 +1,7 @@
 import 'package:flip_card/flip_card.dart';
 import 'package:flutter/material.dart';
-import 'package:swipeable_card_stack/swipeable_card_stack.dart';
+import 'package:hackathon_moretech_mobile/app/flashcards/FlashCard.dart';
+import 'package:tcard/tcard.dart';
 
 class FlashCardsPage extends StatefulWidget {
   const FlashCardsPage({Key? key}) : super(key: key);
@@ -16,6 +17,8 @@ class _FlashCardsPageState extends State<FlashCardsPage> {
         back: "Кораллы"),
     FlashCard(front: "Зимой и летом одним цветом, что это?", back: "Солнце"),
     FlashCard(front: "Самый лучший банк на свете", back: "ВТБ"),
+    FlashCard(front: "Самый лучший банк на свете", back: "ВТБ"),
+    FlashCard(front: "Самый лучший банк на свете", back: "ВТБ"),
   ];
 
   static List<T> _map<T>(List list, Function handler) {
@@ -27,18 +30,18 @@ class _FlashCardsPageState extends State<FlashCardsPage> {
   }
 
   int _current = 0;
-  int counter = 2;
+  bool _isEnd = false;
 
   @override
   Widget build(BuildContext context) {
-    SwipeableCardSectionController _cardController =
-        SwipeableCardSectionController();
+    List<Widget> cards = List.generate(
+        questions.length, (index) => _renderContent(index, questions[index]));
 
     return SafeArea(
       child: Center(
         child: Container(
           color: Colors.grey[100],
-          padding: EdgeInsets.only(top: 40),
+          padding: EdgeInsets.only(top: 30),
           child: Column(
               mainAxisSize: MainAxisSize.max,
               crossAxisAlignment: CrossAxisAlignment.center,
@@ -48,7 +51,7 @@ class _FlashCardsPageState extends State<FlashCardsPage> {
                   style: TextStyle(fontSize: 20, color: Colors.grey[600]),
                 ),
                 Container(
-                  margin: EdgeInsets.only(top: 12, bottom: 50),
+                  margin: EdgeInsets.only(top: 12),
                   child: Row(
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: _map(questions, (index, assetName) {
@@ -64,103 +67,117 @@ class _FlashCardsPageState extends State<FlashCardsPage> {
                     }),
                   ),
                 ),
-                SwipeableCardsSection(
-                  cardController: _cardController,
-                  context: context,
-                  //add the first 3 cards
-                  items: [
-                    _renderContent(questions[0]),
-                    _renderContent(questions[1]),
-                    _renderContent(questions[2]),
+                !_isEnd
+                    ? TCard(
+                        size: Size(350, 450),
+                        cards: cards,
+                        onForward: (index, info) {
+                          setState(() {
+                            _current++;
+                          });
+                          print("OnForward $index ${info.direction}");
+                        },
+                        onEnd: () {
+                          setState(() {
+                            _current = questions.length - 1;
+                            _isEnd = true;
+                          });
+                          print("OnEnd");
+                        },
+                      )
+                    : Card(
+                        elevation: 0.0,
+                        margin: const EdgeInsets.only(
+                            left: 32.0, right: 32.0, top: 10.0, bottom: 0.0),
+                        color: Color(0x00000000),
+                        child: _getFlipCardContent(-1, "Вы все прошли"),
+                      ),
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    Container(
+                      width: 48,
+                      height: 40,
+                      decoration: const BoxDecoration(
+                        color: Color(0xffFFBD12),
+                        borderRadius: BorderRadius.only(
+                            topRight: Radius.circular(10.0),
+                            bottomRight: Radius.circular(10.0)),
+                      ),
+                      child: Center(
+                          child: Text(
+                        '2',
+                        style: TextStyle(
+                            fontSize: 20,
+                            fontWeight: FontWeight.w700,
+                            color: Colors.white),
+                      )),
+                    ),
+                    Container(
+                      width: 48,
+                      height: 40,
+                      decoration: const BoxDecoration(
+                        color: Color(0xff7CE579),
+                        borderRadius: BorderRadius.only(
+                            topLeft: Radius.circular(10.0),
+                            bottomLeft: Radius.circular(10.0)),
+                      ),
+                      child: Center(
+                          child: Text(
+                        '1',
+                        style: TextStyle(
+                            fontSize: 20,
+                            fontWeight: FontWeight.w700,
+                            color: Colors.white),
+                      )),
+                    ),
                   ],
-                  onCardSwiped: (dir, index, widget) {
-                    //Add the next card
-                    // if (counter < questions.length) {
-                    //   _cardController.addItem(_renderContent(questions[0]));
-                    //   counter++;
-                    // }
-
-                    setState(() {
-                      _current++;
-                    });
-
-                    // if (dir == Direction.left) {
-                    //   print('onDisliked ${(widget as CardView).text} $index');
-                    // } else if (dir == Direction.right) {
-                    //   print('onLiked ${(widget as CardView).text} $index');
-                    // } else if (dir == Direction.up) {
-                    //   print('onUp ${(widget as CardView).text} $index');
-                    // } else if (dir == Direction.down) {
-                    //   print('onDown ${(widget as CardView).text} $index');
-                    // }
-                  },
-                  enableSwipeUp: true,
-                  enableSwipeDown: true,
-                ),
+                )
               ]),
         ),
       ),
     );
   }
 
-  _renderContent(FlashCard question) {
-    double cardHeight = 400;
-    double cardWidth = 300;
-
+  _renderContent(index, FlashCard question) {
     return Card(
-      borderOnForeground: false,
       elevation: 0.0,
-      margin: EdgeInsets.only(left: 32.0, right: 32.0, top: 20.0, bottom: 0.0),
       color: Color(0x00000000),
       child: FlipCard(
-        direction: FlipDirection.HORIZONTAL,
-        speed: 1000,
-        onFlipDone: (status) {
-          print(status);
-        },
-        front: Container(
-          padding: EdgeInsets.all(8),
-          height: cardHeight,
-          width: cardWidth,
-          decoration: BoxDecoration(
-            color: Color(0xFFffffff),
-            borderRadius: BorderRadius.all(Radius.circular(8.0)),
-          ),
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: <Widget>[
-              Text(question.front,
-                  textAlign: TextAlign.center,
-                  style: TextStyle(
-                    fontSize: 24,
-                  )),
-            ],
-          ),
-        ),
-        back: Container(
-          padding: EdgeInsets.all(8),
-          height: cardHeight,
-          width: cardWidth,
-          decoration: BoxDecoration(
-            color: Color(0xFFffffff),
-            borderRadius: BorderRadius.all(Radius.circular(8.0)),
-          ),
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: <Widget>[
-              Text(question.back,
-                  textAlign: TextAlign.center, style: TextStyle(fontSize: 24)),
-            ],
-          ),
-        ),
+          direction: FlipDirection.HORIZONTAL,
+          speed: 800,
+          onFlipDone: (status) {
+            print("$index: $status");
+          },
+          front: _getFlipCardContent(index, question.front),
+          back: _getFlipCardContent(index, question.back)),
+    );
+  }
+
+  _getFlipCardContent(index, text) {
+    double cardHeight = 450;
+    double cardWidth = 300;
+
+    return Container(
+      padding: EdgeInsets.all(8),
+      height: cardHeight,
+      width: cardWidth,
+      decoration: const BoxDecoration(
+          color: Color(0xFFffffff),
+          borderRadius: BorderRadius.all(Radius.circular(8.0)),
+          boxShadow: [
+            BoxShadow(color: Color(0xffc9c9c9), spreadRadius: 3),
+          ]),
+      child: Column(
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: <Widget>[
+          Text(text,
+              textAlign: TextAlign.center,
+              style: TextStyle(
+                fontSize: 24,
+              )),
+        ],
       ),
     );
   }
-}
-
-class FlashCard {
-  String front;
-  String back;
-
-  FlashCard({required this.front, required this.back});
 }
