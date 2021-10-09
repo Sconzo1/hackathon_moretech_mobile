@@ -37,6 +37,7 @@ dependencies:
   fab_circular_menu:
   syncfusion_flutter_charts:
   transition:
+  radar_chart:
 
   swipable_stack:
 
@@ -68,8 +69,8 @@ flutter:
 
   # To add images to your application, add an images section, like this:
   assets:
-    - assets/
     - images/
+    - assets/
 
   # An image asset can refer to one or more resolution-specific "variants", see
   # https://flutter.dev/assets-and-images/#resolution-aware.
