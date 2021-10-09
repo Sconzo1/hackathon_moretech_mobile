@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:hackathon_moretech_mobile/app/flashcards/flashcards.dart';
+import 'package:hackathon_moretech_mobile/app/flashcards/guidecards.dart';
 import 'package:hackathon_moretech_mobile/app/top_level_providers.dart';
 import 'package:hackathon_moretech_mobile/constants/pages_ids.dart';
 import 'package:hackathon_moretech_mobile/widgets/bottom_navigation_bar.dart';
@@ -52,7 +52,7 @@ class MyNavigation extends ConsumerWidget {
           }
         case TODO_PAGE:
           {
-            return FlashCardsPage();
+            return GuideCards();
           }
       }
     }
