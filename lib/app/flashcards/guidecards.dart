@@ -6,7 +6,6 @@ import 'package:tcard/tcard.dart';
 import '../top_level_providers.dart';
 
 class GuideCards extends ConsumerWidget {
-
   final guides = [
     Guide(
         title: "Деревья знают это",
@@ -28,8 +27,7 @@ class GuideCards extends ConsumerWidget {
             "\n\nАкция — это ценная бумага, которую выпускает акционерное общество, другими словами — компания-эмитент."),
   ];
 
-
-  List<double> values1 = [0.4, 0.8, 0.65, 0.55, 0.2];
+  List<double> values1 = [0.4, 0.65, 0.8, 0.55, 0.2];
 
   @override
   Widget build(BuildContext context, watch) {
@@ -86,14 +84,14 @@ class GuideCards extends ConsumerWidget {
       );
     }
 
-    _buildFinishCard() {
+    _buildResultCard() {
       return GestureDetector(
         onHorizontalDragEnd: (details) {
           print("Closing CardGame");
           isCardGameActive.state = false;
         },
         child: Container(
-          width: 300,
+          width: 360,
           padding: EdgeInsets.all(5),
           decoration: BoxDecoration(
             border: Border.all(width: 2, color: Color(0xffe9e9e9)),
@@ -117,32 +115,83 @@ class GuideCards extends ConsumerWidget {
                   ),
                 ),
                 Container(
-                  margin: EdgeInsets.only(bottom: 20),
+                  margin: EdgeInsets.only(bottom: 10),
                   child: Text(
                     "--ПРОЙДЕНО--",
                     style: TextStyle(color: Color(0xff75D15E), fontSize: 22),
                   ),
                 ),
-                RadarChart(
-                  length: 5,
-                  radius: 100,
-                  initialAngle: 3.14 / 9,
-                  backgroundColor: Color(0xffFFBD12).withOpacity(0.2),
-                  borderStroke: 2,
-                  borderColor: Colors.white,
-                  radialStroke: 2,
-                  radialColor: Colors.white,
-                  radars: [
-                    RadarTile(
-                      values: values1,
-                      borderStroke: 3,
-                      borderColor: Color(0xffFFBD12),
-                      backgroundColor: Colors.yellow.withOpacity(0.4),
-                    ),
-                  ],
+                Container(
+                  width: 240,
+                  height: 240,
+                  child: Stack(
+                    children: [
+                      Positioned(
+                        left: 85,
+                        top: 5,
+                        child: Text(
+                          "Добыча",
+                          textAlign: TextAlign.center,
+                          style: TextStyle(fontSize: 18),
+                        ),
+                      ),
+                      Positioned(
+                        right: 0,
+                        top: 60,
+                        child: Text(
+                          "Сила",
+                          style: TextStyle(fontSize: 18),
+                        ),
+                      ),
+                      Positioned(
+                        right: 20,
+                        bottom: 20,
+                        child: Text(
+                          "Гибкость",
+                          style: TextStyle(fontSize: 18),
+                        ),
+                      ),
+                      Positioned(
+                        left: 20,
+                        bottom: 20,
+                        child: Text(
+                          "Поддержка",
+                          style: TextStyle(fontSize: 18),
+                        ),
+                      ),
+                      Positioned(
+                        left: 0,
+                        top: 60,
+                        child: Text(
+                          "Осада",
+                          style: TextStyle(fontSize: 18),
+                        ),
+                      ),
+                      Center(
+                        child: RadarChart(
+                          length: 5,
+                          radius: 90,
+                          initialAngle: 3.14 / 3.35,
+                          backgroundColor: Color(0xffFFBD12).withOpacity(0.2),
+                          borderStroke: 2,
+                          borderColor: Colors.white,
+                          radialStroke: 2,
+                          radialColor: Colors.white,
+                          radars: [
+                            RadarTile(
+                              values: values1,
+                              borderStroke: 3,
+                              borderColor: Color(0xffFFBD12),
+                              backgroundColor: Colors.yellow.withOpacity(0.4),
+                            ),
+                          ],
+                        ),
+                      ),
+                    ],
+                  ),
                 ),
                 Container(
-                  margin: EdgeInsets.only(top: 20),
+                  margin: EdgeInsets.only(top: 0),
                   child: Text(
                     "Вы прокачали навык",
                     textAlign: TextAlign.center,
@@ -167,41 +216,38 @@ class GuideCards extends ConsumerWidget {
           ),
         ),
       );
-    };
+    }
 
+    ;
 
     List<Widget> guideCards =
-    List.generate(guides.length, (index) => _buildGuideCard(guides[index]));
-
+        List.generate(guides.length, (index) => _buildGuideCard(guides[index]));
 
     return SafeArea(
       child: Center(
-        child: !isCardGameFinished.state
-            ? TCard(
-                size: Size(MediaQuery.of(context).size.width * 0.9,
-                    MediaQuery.of(context).size.height * 0.75),
-                cards: guideCards,
-                onForward: (index, info) {
-                  if (info.direction == SwipDirection.Left){
-                    notRememberedCards.state++;
-                  } else {
-                    rememberedCards.state ++;
-                  }
-                },
-                onEnd: () {
-                  print("OnEnd1");
-                  isCardGameFinished.state = true;
-                  // setState(() {
-                  //   isFinished = true;
-                  // });
-                },
-              )
-            : _buildFinishCard()
-      ),
+          child: !isCardGameFinished.state
+              ? TCard(
+                  size: Size(MediaQuery.of(context).size.width * 0.9,
+                      MediaQuery.of(context).size.height * 0.75),
+                  cards: guideCards,
+                  onForward: (index, info) {
+                    if (info.direction == SwipDirection.Left) {
+                      notRememberedCards.state++;
+                    } else {
+                      rememberedCards.state++;
+                    }
+                  },
+                  onEnd: () {
+                    print("OnEnd1");
+                    isCardGameFinished.state = true;
+                    // setState(() {
+                    //   isFinished = true;
+                    // });
+                  },
+                )
+              : _buildResultCard()),
     );
   }
-
-
 }
 
 class Guide {
